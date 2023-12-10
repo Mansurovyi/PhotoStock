@@ -8,7 +8,7 @@ from .models import Photo
 class PhotoListView(ListView):
     model = Photo     
     template_name = 'photoapp/list.html'
-    context_object_name = 'images'
+    context_object_name = 'phoros'
 
 class PhotoTagListView(PhotoListView):
     template_name = 'photoapp/taglist.html'
@@ -27,7 +27,7 @@ class PhotoTagListView(PhotoListView):
 class PhotoDetailView(DetailView):
     model = Photo
     template_name = 'photoapp/detail.html'
-    context_object_name = 'image'
+    context_object_name = 'photo'
 
 class PhotoCreateView(LoginRequiredMixin, CreateView):
     model = Photo
