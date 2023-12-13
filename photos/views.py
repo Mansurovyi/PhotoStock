@@ -8,7 +8,7 @@ from .models import Photo
 class PhotoListView(ListView):
     model = Photo     
     template_name = 'photoapp/list.html'
-    context_object_name = 'phoros'
+    context_object_name = 'photos'
 
 class PhotoTagListView(PhotoListView):
     template_name = 'photoapp/taglist.html'
@@ -32,7 +32,7 @@ class PhotoDetailView(DetailView):
 class PhotoCreateView(LoginRequiredMixin, CreateView):
     model = Photo
     fields = ['title', 'description', 'image']
-    template_name = 'stock/create.html'
+    template_name = 'photoapp/create.html'
     success_url = reverse_lazy('photo:list')
     def form_valid(self, form):
         form.instance.author = self.request.user

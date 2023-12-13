@@ -1,12 +1,15 @@
 {% extends 'photoapp/base.html' %}
+{% load thumbnail %}
+
 {% block body %}
 
 <div class="row">
   {% for photo in photos %}
   <div class="col-lg-3 col-md-4 col-xs-6">
-    <a href="{% url 'photo:detail' photo.id %}" class="d-block mb-4 h-100">
-      <img src="{{photo.image.url}}" class="img-fluid rounded" alt="{{photo.title}}" />
-    </a>
+    {% thumbnail photo.image "250x100" crop="center" as im %}
+        <a href="{% url 'photo:detail' photo.id %}" class="d-block mb-4 h-100"></a>
+        <img src="{{ photo.image.url }}" width="{{ im.width }}" height="{{ im.height }}">
+        {% endthumbnail %}  
   </div>
   {% endfor %}
 </div>
