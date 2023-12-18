@@ -5,12 +5,14 @@
 
 <div class="row">
   {% for photo in photos %}
-  <div class="col-lg-3 col-md-4 col-xs-6">
-    {% thumbnail photo.image "250x100" crop="center" as im %}
-        <a href="{% url 'photo:detail' photo.id %}" class="d-block mb-4 h-100"></a>
-        <img src="{{ photo.image.url }}" width="{{ im.width }}" height="{{ im.height }}">
-        {% endthumbnail %}  
-  </div>
+    <div class="col-lg-3 col-md-4 col-xs-6">
+      <a href="{% url 'photo:detail' photo.id %}" class="d-block mb-4 h-100">
+        <h2>{{ photo.title }}</h2>
+        {% thumbnail photo.image "300x300" crop="center" as im %}
+          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" oncontextmenu="return false;">
+        {% endthumbnail %}
+      </a>
+    </div>
   {% endfor %}
 </div>
 

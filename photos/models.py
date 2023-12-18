@@ -3,7 +3,6 @@ from django.conf import settings
 from django.utils import timezone
 from taggit.managers import TaggableManager
 
-
 class Photo(models.Model):
     image = models.ImageField()
     title = models.CharField(max_length=200)

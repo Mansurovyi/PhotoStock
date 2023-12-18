@@ -9,12 +9,20 @@
     <p class="text-center">
       <span><a href="{% url 'photo:update' photo.id %}" class="text-primary px-2">Update</a></span>
       <span><a href="{% url 'photo:delete' photo.id %}" class="text-danger px-2">Delete</a></span>
+      {% if user.is_authenticated %}
+      <span><a href="{{photo.image.url}}" class="text-warning px-2" target="_blank">Download</a></span>
+      {% endif %}
+      {%else%}
+      <span><a href="{% url 'user:login' %}" class="text-warning px-2">Download</a></span>
     </p>
   {% endif %}
+ 
 </div>
 <div class="row pb-5">
   <div class="col-md-8">
-    <img src="{{photo.image.url}}" alt="" width="100%" />
+    {% thumbnail photo.image "500x300" crop="center" as im %}
+    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" oncontextmenu="return false;">
+  {% endthumbnail %}
   </div>
   <div class="col-md-4">
     <h4>More about this photo:</h4>
