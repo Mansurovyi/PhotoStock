@@ -4,15 +4,15 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from .models import Photo
+from django.contrib import messages
 
 class PhotoListView(ListView):
-    model = Photo     
+    model = Photo
     template_name = 'photoapp/list.html'
     context_object_name = 'photos'
 
 class PhotoTagListView(PhotoListView):
     template_name = 'photoapp/taglist.html'
-    # Custom method
     def get_tag(self):
         return self.kwargs.get('tag')
     
@@ -29,9 +29,17 @@ class PhotoDetailView(DetailView):
     template_name = 'photoapp/detail.html'
     context_object_name = 'photo'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            user_photos = Photo.objects.filter(author=self.request.user)
+            context['user_photos'] = user_photos
+            context['total_user_photos'] = user_photos.count()
+        return context
+
 class PhotoCreateView(LoginRequiredMixin, CreateView):
     model = Photo
-    fields = ['title', 'description', 'image']
+    fields = ['title', 'description', 'image', 'tags']
     template_name = 'photoapp/create.html'
     success_url = reverse_lazy('photo:list')
     def form_valid(self, form):
@@ -50,7 +58,7 @@ class UserIsSubmitter(UserPassesTestMixin):
 class PhotoUpdateView(UserIsSubmitter, UpdateView):
     template_name = 'photoapp/update.html'
     model = Photo
-    fields = ['title', 'description']
+    fields = ['title', 'description', 'tags']
     success_url = reverse_lazy('photo:list')
 
 class PhotoDeleteView(UserIsSubmitter, DeleteView):
